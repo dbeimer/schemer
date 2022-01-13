@@ -122,11 +122,11 @@ def process_file(file_path):
             text=f.read()
             text.split('\n')
             #identfy separator
-            print("it's still in development")
+            return "This filetype is still in development!!!"
 
 
     else:
-        return "No se reconoce el formato de archivo"
+        return "This filetype is not supported yet!!!"
 
 
     tipos=generateDataType(row1)
