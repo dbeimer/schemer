@@ -2,6 +2,7 @@ import gi
 from gi.repository import Gtk,Gdk
 from gi.repository import Handy as hdy
 import process_file
+from urllib.parse import urlparse,unquote
 
 gi.require_version("Gtk","3.0")
 gi.require_version("Handy","1")
@@ -33,12 +34,10 @@ class MainWindow(hdy.Window):
         header_context=HEADER.get_style_context()
         header_context.add_class("default-decoration")
         header_context.add_class(Gtk.STYLE_CLASS_FLAT)
-        
         vbox=Gtk.Box(orientation=Gtk.Orientation.VERTICAL,expand=False)
         vbox.add(HEADER)
         scrolled = Gtk.ScrolledWindow(expand=True)
         scrolled.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
-     
 
         self.drop_area=DropArea()
 
@@ -60,7 +59,6 @@ class DropArea(Gtk.Label):
         self.set_label("Drop something on me!")
         self.set_selectable(True)
         self.drag_dest_set(Gtk.DestDefaults.ALL, [], DRAG_ACTION)
-        
 
         self.connect("drag-data-received", self.on_drag_data_received)
 
@@ -68,13 +66,9 @@ class DropArea(Gtk.Label):
         # print(info)
         if info == TARGET_ENTRY_TEXT:
             text = data.get_text()
-            print(widget)
-            ruta=text[7:]
-            print("Received text: %s" % text)
-            print("File to process: %s" % ruta)
-            FILE=ruta.split('/')[-1]
-            
-            text=process_file.process_file(ruta.strip())
+            url_obj = urlparse(text)
+            file_path=unquote(url_obj.path)
+            text=process_file.process_file(file_path.strip())
             self.set_label(text)
 
         # elif info == TARGET_ENTRY_PIXBUF:
