@@ -1,11 +1,13 @@
+
 import gi
+gi.require_version('Gtk', '3.0')
+gi.require_version("Handy","1")
+
 from gi.repository import Gtk,Gdk
 from gi.repository import Handy as hdy
 import process_file
 from urllib.parse import urlparse,unquote
 
-gi.require_version("Gtk","3.0")
-gi.require_version("Handy","1")
 
 
 hdy.init()
@@ -27,7 +29,7 @@ class MainWindow(hdy.Window):
     def __init__(self):
         super().__init__()
 
-        self.props.default_height=300
+        self.props.default_height=600
         self.props.default_width=400
 
         HEADER=hdy.HeaderBar(show_close_button=True,title=FILE)
@@ -68,7 +70,11 @@ class DropArea(Gtk.Label):
             text = data.get_text()
             url_obj = urlparse(text)
             file_path=unquote(url_obj.path)
+
+            self.set_label("Procesing file...")
+
             text=process_file.process_file(file_path.strip())
+
             self.set_label(text)
 
         # elif info == TARGET_ENTRY_PIXBUF:
