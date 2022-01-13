@@ -1,3 +1,5 @@
 vext
 vext.gi
-
+unidecode
+pandas
+openpyxl
