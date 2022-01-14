@@ -98,7 +98,7 @@ def process_file(file_path):
     print("He recibido lo siguiente:{}".format(file_path))
     text=''
     file=Path(file_path)
-    extension_file=file.suffix
+    extension_file=file.suffix.lower()
 
     header=[]
     row1=[]
@@ -111,7 +111,7 @@ def process_file(file_path):
         header=[string_tratment(x) for x in header]
         row1=df.iloc[0].values.tolist()
 
-    elif extension_file=='.xlsx' or extension_file=='.xls':
+    elif extension_file=='.xlsx' or extension_file=='.xls' or extension_file=='.xlsm':
         wb_obj=openpyxl.load_workbook(file)
         sheet=wb_obj.active
         header=[string_tratment(row.value) for row in sheet[1] if row.value!=None]

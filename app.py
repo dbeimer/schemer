@@ -55,13 +55,16 @@ class MainWindow(hdy.Window):
         self.drop_area.drag_dest_add_text_targets()
         # self.iconview.drag_source_add_text_targets()
 
-class DropArea(Gtk.Label):
+class DropArea(Gtk.TextView):
     def __init__(self):
         Gtk.Label.__init__(self)
-        self.set_label("Drop something on me!")
-        self.set_selectable(True)
+        textBuffer=self.get_buffer()
+        styleContext=self.get_style_context()
+        styleContext.add_class("text-area")
+        textBuffer.set_text("Drop something on me!")
+        
+        # self.set_selectable(True)
         self.drag_dest_set(Gtk.DestDefaults.ALL, [], DRAG_ACTION)
-
         self.connect("drag-data-received", self.on_drag_data_received)
 
     def on_drag_data_received(self, widget, drag_context, x, y, data, info, time):
@@ -71,11 +74,12 @@ class DropArea(Gtk.Label):
             url_obj = urlparse(text)
             file_path=unquote(url_obj.path)
 
-            self.set_label("Procesing file...")
+            textBuffer=self.get_buffer()
+            textBuffer.set_text("Procesing file...")
 
             text=process_file.process_file(file_path.strip())
 
-            self.set_label(text)
+            textBuffer.set_text(text)
 
         # elif info == TARGET_ENTRY_PIXBUF:
         #     pixbuf = data.get_pixbuf()
