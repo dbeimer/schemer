@@ -106,8 +106,13 @@ def process_file(file_path):
     # print("estension:",extension_file)
 
     if extension_file=='.csv':
-        df=pd.read_csv(file_path)
+        df=pd.read_csv(file_path,delimiter=';')
         header=df.columns.values.tolist()
+        if len(header)==1:
+            df=pd.read_csv(file_path,delimiter=',')
+            header=df.columns.values.tolist()
+
+
         header=[string_tratment(x) for x in header]
         row1=df.iloc[0].values.tolist()
 
