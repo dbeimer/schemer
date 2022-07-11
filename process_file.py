@@ -10,10 +10,6 @@ import numpy as np
 
 from pathlib import Path
 
-# print(sys.argv)
-# file_path=None
-# if len(sys.argv)>1:
-#     file_path=sys.argv[1]
 
 chars=string.punctuation
 
